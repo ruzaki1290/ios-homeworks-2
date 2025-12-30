@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,6 +28,7 @@
 		650BB6FC2EFED00C004BAB03 /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB6F42EFED00C004BAB03 /* StorageService.framework */; };
 		650BB6FD2EFED00C004BAB03 /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB6F42EFED00C004BAB03 /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		650BB7022EFED01D004BAB03 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3601A2C128495DDF000D261A /* Post.swift */; };
+		6579BEAF2F041D8000F1C29E /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 6579BEAE2F041D8000F1C29E /* iOSIntPackage */; };
 		6A6D638A51F49E7779F93D8A /* Pods_Navigation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE7B8A7839ABB0D9A20EB51E /* Pods_Navigation.framework */; };
 		A89CFCECCCDBA3A2FF863A86 /* Pods_StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4006BF0E9625304E24FC687D /* Pods_StorageService.framework */; };
 /* End PBXBuildFile section */
@@ -88,17 +89,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		650BB6F52EFED00C004BAB03 /* StorageService */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = StorageService;
-			sourceTree = "<group>";
-		};
+		650BB6F52EFED00C004BAB03 /* StorageService */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = StorageService; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6579BEAF2F041D8000F1C29E /* iOSIntPackage in Frameworks */,
 				650BB6FC2EFED00C004BAB03 /* StorageService.framework in Frameworks */,
 				6A6D638A51F49E7779F93D8A /* Pods_Navigation.framework in Frameworks */,
 			);
@@ -193,7 +185,6 @@
 				DCF853ECD7F33B99B3109A9B /* Pods-StorageService.debug.xcconfig */,
 				2AB186B16576CCFBBF6ABA70 /* Pods-StorageService.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -289,6 +280,9 @@
 				Base,
 			);
 			mainGroup = 3601A29B28490DDF000D261A;
+			packageReferences = (
+				6579BEAD2F041C7000F1C29E /* XCRemoteSwiftPackageReference "iOSIntPackage" */,
+			);
 			productRefGroup = 3601A2A528490DDF000D261A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -327,9 +321,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Navigation/Pods-Navigation-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Navigation/Pods-Navigation-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -734,6 +732,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6579BEAD2F041C7000F1C29E /* XCRemoteSwiftPackageReference "iOSIntPackage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TrueMax/iOSIntPackage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6579BEAE2F041D8000F1C29E /* iOSIntPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6579BEAD2F041C7000F1C29E /* XCRemoteSwiftPackageReference "iOSIntPackage" */;
+			productName = iOSIntPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3601A29C28490DDF000D261A /* Project object */;
 }
