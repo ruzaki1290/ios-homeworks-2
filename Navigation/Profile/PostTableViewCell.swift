@@ -5,6 +5,7 @@
 
 import UIKit
 import StorageService
+import iOSIntPackage
 
 class PostTableViewCell: UITableViewCell {
     
@@ -97,10 +98,24 @@ class PostTableViewCell: UITableViewCell {
     func configPostArray(post: Post) {
         postAuthor.text = post.author
         postDescription.text = post.description
-        postImage.image = UIImage(named: post.image)
         postLikes.text = "Likes: \(post.likes)"
         viewCounter = post.views
         postViews.text = "Views: \(viewCounter)"
+        
+        postImage.image = nil
+
+        guard let uiImage = UIImage(named: post.image) else { return }
+
+        let processor = ImageProcessor()
+        processor.processImage(
+            sourceImage: uiImage,
+            filter: .noir
+        ) { [weak self] processedImage in
+            DispatchQueue.main.async {
+                self?.postImage.image = processedImage
+            }
+        }
+
     }
     
     func incrementPostViewsCounter() {
