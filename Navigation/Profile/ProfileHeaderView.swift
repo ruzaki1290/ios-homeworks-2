@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class ProfileHeaderView: UITableViewHeaderFooterView {
     
@@ -35,7 +36,7 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("lol")
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupNameLabel() {
@@ -43,17 +44,18 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         fullNameLabel.text = "Teo West"
         fullNameLabel.font = .boldSystemFont(ofSize: 18)
         fullNameLabel.textColor = .black
-        addSubview(fullNameLabel)
-        NSLayoutConstraint.activate([
-            fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 156),
-            fullNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            fullNameLabel.heightAnchor.constraint(equalToConstant: 28),
-        ])
+
+        contentView.addSubview(fullNameLabel)
+
+        fullNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(156)
+            make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(28)
+        }
     }
     
     private func setupStatusLabel() {
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.text = statusText
         statusLabel.font = .systemFont(ofSize: 17)
         statusLabel.textColor = .black
@@ -67,29 +69,32 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setupStatusTextField() {
-        statusTextField.translatesAutoresizingMaskIntoConstraints = false
         statusTextField.textColor = .darkGray
         statusTextField.backgroundColor = .white
         
         let paddingView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
         statusTextField.leftView = paddingView
         statusTextField.leftViewMode = .always
+
         statusTextField.layer.cornerRadius = 8
         statusTextField.layer.borderWidth = 1
         statusTextField.layer.borderColor = UIColor.gray.cgColor
-        statusTextField.attributedPlaceholder = NSAttributedString.init(string: "Ready...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        statusTextField.attributedPlaceholder = NSAttributedString.init(
+            string: "Ready...", 
+            attributes: [.foregroundColor: UIColor.darkGray]
+            )
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        addSubview(statusTextField)
-        NSLayoutConstraint.activate([
-            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16),
-            statusTextField.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
-            statusTextField.trailingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            statusTextField.heightAnchor.constraint(equalToConstant: 32),
-        ])
+
+        contentView.addSubview(statusTextField)
+
+        statusTextField.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(fullNameLabel)
+            make.height.equalTo(32)
+        }
     }
     
     private func setupStatusButton() {
-        setStatusButton.translatesAutoresizingMaskIntoConstraints = false
         setStatusButton.backgroundColor = .systemBlue
         setStatusButton.layer.cornerRadius = LayoutConstants.cornerRadius
         setStatusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
@@ -100,17 +105,18 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         setStatusButton.setTitle("Show status", for: .normal)
         setStatusButton.setTitleColor(.white, for: .normal)
         setStatusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
-        addSubview(setStatusButton)
-        NSLayoutConstraint.activate([
-            setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16),
-            setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            setStatusButton.heightAnchor.constraint(equalToConstant: 48),
-        ])
+
+        contentView.addSubview(setStatusButton)
+
+        setStatusButton.snp.makeConstraints { make in
+            make.top.equalTo(statusTextField.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(48)
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+        }
     }
     
     private func setupAvatarImage() {
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         avatarImageView.image = UIImage(named: "teo")
         avatarImageView.layer.cornerRadius = 64
         avatarImageView.layer.borderWidth = 3
@@ -125,31 +131,37 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         avatarImageView.addGestureRecognizer(tapGesture)
         
         // cancel an animation mode
-        returnAvatarButton.translatesAutoresizingMaskIntoConstraints = false
         returnAvatarButton.alpha = 0
         returnAvatarButton.backgroundColor = .clear
         returnAvatarButton.contentMode = .scaleToFill
-        returnAvatarButton.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22))?.withTintColor(.black, renderingMode: .automatic), for: .normal)
+        returnAvatarButton.setImage(
+            UIImage(
+                systemName: "xmark", 
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 22)
+            )?.withTintColor(.black, renderingMode: .automatic), 
+            for: .normal
+        )
         returnAvatarButton.tintColor = .black
         returnAvatarButton.addTarget(self, action: #selector(returnAvatarToOrigin), for: .touchUpInside)
         
         // translucent background for the modal animation mode
-        avatarBackground = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
         avatarBackground.backgroundColor = .darkGray
         avatarBackground.isHidden = true
         avatarBackground.alpha = 0
         
-        addSubviews(avatarBackground, avatarImageView, returnAvatarButton)
+        contentView.addSubview(avatarBackground)
+        contentView.addSubview(avatarImageView)
+        contentView.addSubview(returnAvatarButton)
         
-        NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 128),
-            avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor),
-            
-            returnAvatarButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            returnAvatarButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-        ])
+        avatarImageView.snp.makeConstraints { make in
+            make.top.leading.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+            make.size.equalTo(128)
+        }
+
+        returnAvatarButton.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+            make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(16)
+        }
     }
     
     // MARK: - Event handlers
@@ -173,8 +185,10 @@ final class ProfileHeaderView: UITableViewHeaderFooterView {
         let scale = UIScreen.main.bounds.width / avatarImageView.bounds.width
         
         UIView.animate(withDuration: 0.5) {
-            self.avatarImageView.center = CGPoint(x: UIScreen.main.bounds.midX,
-                                                  y: UIScreen.main.bounds.midY - self.avatarOriginPoint.y)
+            self.avatarImageView.center = CGPoint(
+                x: UIScreen.main.bounds.midX,
+                y: UIScreen.main.bounds.midY - self.avatarOriginPoint.y
+            )
             self.avatarImageView.transform = CGAffineTransform(scaleX: scale, y: scale)
             self.avatarImageView.layer.cornerRadius = 0
             self.avatarBackground.isHidden = false
