@@ -8,6 +8,19 @@ import SnapKit
 
 final class ProfileViewController: UIViewController {
     
+    // MARK: Dependencies
+    
+    private let user: User
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     static let headerIdent = "header"
     static let photoIdent = "photo"
     static let postIdent = "post"
@@ -21,10 +34,13 @@ final class ProfileViewController: UIViewController {
         return table
     }()
     
-    // MARK: - Setup section
+    // MARK: - Setup Section
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        title = user.fullName
         
         #if DEBUG
         view.backgroundColor = .systemYellow
@@ -40,6 +56,7 @@ final class ProfileViewController: UIViewController {
         Self.postTableView.delegate = self
         Self.postTableView.refreshControl = UIRefreshControl()
         Self.postTableView.refreshControl?.addTarget(self, action: #selector(reloadTableView), for: .valueChanged)
+        
     }
     
     private func setupConstraints() {

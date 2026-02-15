@@ -15,7 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // create tab bar with feed and profile items
-        let loginVC = LoginViewController()
+        let user = User(
+            login: "Rus",
+            fullName: "Rus Zakirov",
+            avatar: UIImage(systemName: "person.circle")!,
+            status: "Hello!"
+        )
+        
+        let userService = CurrentUserService(user: user)
+        let loginVC = LoginViewController(userService: userService)
+
         let profileNC = UINavigationController(rootViewController: loginVC)
         profileNC.tabBarItem = UITabBarItem(title: "Profile",
                                             image: UIImage(systemName: "person.crop.circle"),

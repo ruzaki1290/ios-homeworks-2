@@ -7,7 +7,21 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    // MARK: Visual content
+    // MARK: Dependencies
+    
+    private let userService: UserService
+    
+    init(userService: UserService) {
+        self.userService = userService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // MARK: Visual Content
     
     var loginScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -92,7 +106,7 @@ final class LoginViewController: UIViewController {
         return password
     }()
     
-    // MARK: - Setup section
+    // MARK: - Setup Section
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,10 +180,15 @@ final class LoginViewController: UIViewController {
 
     }
     
-    // MARK: - Event handlers
+    // MARK: - Event Handlers
 
     @objc private func touchLoginButton() {
-        let profileVC = ProfileViewController()
+        let login = "Rus"
+        
+        guard let user = userService.user(for: login) else {
+            return
+        }
+        let profileVC = ProfileViewController(user: user)
         navigationController?.setViewControllers([profileVC], animated: true)
     }
 
