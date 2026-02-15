@@ -7,7 +7,21 @@ import UIKit
 
 final class LoginViewController: UIViewController {
     
-    // MARK: Visual content
+    // MARK: Dependencies
+    
+    private let userService: UserService
+    
+    init(userService: UserService) {
+        self.userService = userService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // MARK: Visual Content
     
     var loginScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -92,13 +106,13 @@ final class LoginViewController: UIViewController {
         return password
     }()
     
-    // MARK: - Setup section
+    // MARK: - Setup Section
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
         
         setupViews()
     }
@@ -166,12 +180,29 @@ final class LoginViewController: UIViewController {
 
     }
     
-    // MARK: - Event handlers
+    // MARK: - Event Handlers
 
     @objc private func touchLoginButton() {
-        let profileVC = ProfileViewController()
+        let login = loginField.text ?? ""
+        
+        guard let user = userService.user(for: login) else {
+            showLoginError()
+            return
+        }
+        let profileVC = ProfileViewController(user: user)
         navigationController?.setViewControllers([profileVC], animated: true)
     }
+    
+    private func showLoginError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Неверный логин",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
 
     @objc private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {

@@ -11,12 +11,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // create tab bar with feed and profile items
-        let loginVC = LoginViewController()
+        let user = User(
+            login: "Rus",
+            fullName: "Rus Zakirov",
+            avatar: UIImage(systemName: "person.circle")!,
+            status: "Hello!"
+        )
+        
+        let userService: UserService
+            #if DEBUG
+            userService = TestUserService()
+            #else
+            userService = CurrentUserService(user: user)
+            #endif
+        
+        let loginVC = LoginViewController(userService: userService)
+
         let profileNC = UINavigationController(rootViewController: loginVC)
+        
         profileNC.tabBarItem = UITabBarItem(title: "Profile",
                                             image: UIImage(systemName: "person.crop.circle"),
                                             selectedImage: UIImage(systemName: "person.crop.circle.fill"))
@@ -37,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         return true
-    }
-}
+            
+    } // application()
+    
+} // AppDelegate
 
