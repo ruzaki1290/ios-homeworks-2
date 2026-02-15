@@ -8,6 +8,7 @@ import SnapKit
 
 final class ProfileHeaderView: UITableViewHeaderFooterView {
     
+    
     // MARK: Visual objects
     
     var fullNameLabel = UILabel()

@@ -18,8 +18,9 @@ final class TestUserService: UserService {
             
     )
     
+    
     func user(for login: String) -> User? {
-        return testUser
+        return login == testUser.login ? testUser : nil
     }
     
 } // UserService

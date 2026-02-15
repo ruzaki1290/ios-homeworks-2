@@ -112,7 +112,7 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
         
         setupViews()
     }
@@ -183,14 +183,26 @@ final class LoginViewController: UIViewController {
     // MARK: - Event Handlers
 
     @objc private func touchLoginButton() {
-        let login = "Rus"
+        let login = loginField.text ?? ""
         
         guard let user = userService.user(for: login) else {
+            showLoginError()
             return
         }
         let profileVC = ProfileViewController(user: user)
         navigationController?.setViewControllers([profileVC], animated: true)
     }
+    
+    private func showLoginError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Неверный логин",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
 
     @objc private func keyboardShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
